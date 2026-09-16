@@ -20,11 +20,11 @@ A Java command-line application that reads delivery requests, validates inputs, 
 
 2. **Run the program:**
    ```bash
-   java Main <csv_file> <capacity>
+   java Main <csv_file> <limit>
    
 ## Command Arguments Explained
 
-<csv_file>: Path to your input dataset (e.g., deliveries.csv) . <capacity>:  Maximum vehicle weight capacity limit in kilograms ($T$), such as 10.
+<csv_file>: Path to your input dataset (e.g., deliveries.csv) . <limit>:  Maximum vehicle weight capacity limit in kilograms ($T$), such as 10.
 
 
 ## 📄 Example Output
