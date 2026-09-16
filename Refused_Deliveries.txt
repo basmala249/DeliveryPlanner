@@ -1,0 +1,3 @@
+Delivery Number: 10, Reason: Weight exceeds capacity
+Delivery Number: 11, Reason: Missing ID
+Delivery Number: 12, Reason: Missing Area
