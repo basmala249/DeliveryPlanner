@@ -9,9 +9,8 @@ public class Main {
             System.out.println("Usage: java DeliveryPlanner <file> [strategy] [capacity]");
             return;
         }
-        String filePath = args[0];
-        String strategy = args.length > 1 ? args[1] : "fill-gaps"; 
-        double capacity = args.length > 2 ? Double.parseDouble(args[2]) : 10.0; 
+        String filePath = args[0]; 
+        double capacity = args.length > 1 ? Double.parseDouble(args[1]) : 10.0; 
         
         try (FileWriter fw = new FileWriter("Refused_Deliveries.txt", false)) { // false = overwrite
             // just opening it in overwrite mode clears any old content
@@ -21,7 +20,7 @@ public class Main {
         Deliveries deliveries = readDeliveries(filePath, capacity);
         deliveries.sortDeliveriesByArea();
 
-        DeliveryPlanner planner = new DeliveryPlanner(strategy, capacity);
+        DeliveryPlanner planner = new DeliveryPlanner(capacity);
         planner.planDeliveries(deliveries); 
         DeliveryTrips trips = planner.getDeliveryTrips();
         for (Trip trip : trips.getTrips()) {
@@ -29,6 +28,7 @@ public class Main {
             for (Delivery delivery : trip.getDeliveries()) {
                 System.out.println("  Delivery ID: " + delivery.getId() + ", Area: " + delivery.getArea() + ", Priority: " + delivery.getPriority() + ", Weight: " + delivery.getWeight());
             }
+            System.out.println();
         }
         
         exportTripsDetailsText(trips.getTrips());

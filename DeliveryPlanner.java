@@ -2,12 +2,10 @@
 import java.util.List;
 
 public class DeliveryPlanner {
-    String strategy;
     double capacity;
     DeliveryTrips deliveryTrips = new DeliveryTrips();
 
-    public DeliveryPlanner(String strategy, double capacity) {
-        this.strategy = strategy;
+    public DeliveryPlanner(double capacity) {
         this.capacity = capacity;
     }
 

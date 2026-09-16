@@ -14,11 +14,20 @@ public class DeliveryTrips {
     }
 
     public void sortTripsByMostUrgentFirstDelivery() {
-        trips.sort(Comparator.comparingInt(trip ->
-        trip.getDeliveries().isEmpty()
-        ? Integer.MAX_VALUE
-        : trip.getDeliveries().get(0).getPriority()
-        ));
+        trips.sort(
+            Comparator.comparingInt((Trip trip) -> 
+                trip.getDeliveries().isEmpty() 
+                    ? Integer.MAX_VALUE 
+                    : trip.getDeliveries().get(0).getPriority()
+            ).thenComparingInt(trip -> 
+                trip.getDeliveries().isEmpty() 
+                    ? Integer.MAX_VALUE 
+                    : trip.getDeliveries().get(0).getId()
+            )
+        );
+        for (Trip trip : trips) {
+            trip.setTripNumber(trips.indexOf(trip) + 1);
+        }
     }
 
 }
