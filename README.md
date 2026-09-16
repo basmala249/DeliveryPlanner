@@ -24,7 +24,7 @@ A Java command-line application that reads delivery requests, validates inputs, 
    
 ## Command Arguments Explained
 
-<csv_file>: Path to your input dataset (e.g., deliveries.csv) . <csv_file>:  Maximum vehicle weight capacity limit in kilograms ($T$), such as 10.
+<csv_file>: Path to your input dataset (e.g., deliveries.csv) . <capacity>:  Maximum vehicle weight capacity limit in kilograms ($T$), such as 10.
 
 
 ## 📄 Example Output
