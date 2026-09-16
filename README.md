@@ -28,6 +28,7 @@ A Java command-line application that reads delivery requests, validates inputs, 
 
 <capacity>: Maximum vehicle weight capacity limit in kilograms ($T$), such as 10.
 
+
 ## 📄 Example Output
 ![Example Output](https://github.com/basmala249/DeliveryPlanner/blob/main/Output.png)
 
