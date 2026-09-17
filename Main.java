@@ -37,59 +37,76 @@ public class Main {
         
     }
    
-    public static Deliveries readDeliveries(String filePath , double capacity) throws IOException {
+    public static Deliveries readDeliveries(String filePath, double capacity) throws IOException {
         Deliveries deliveries = new Deliveries();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine(); 
-            Integer DeliveryNumber = 0;
+            String line = reader.readLine(); // Skip header
+            int deliveryNumber = 1; // Start counter accounting for skipped header
+
             while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) continue; 
-                String[] parts = line.split(",");
-                DeliveryNumber++;
+                deliveryNumber++;
+                if (line.trim().isEmpty()) continue; 
 
+                String[] parts = line.split(",", -1);
 
-                if(parts[0].isBlank()) {
-                    writeDeliveries(DeliveryNumber.toString(), "Missing ID");
+                if (parts.length < 4) {
+                    writeDeliveries(String.valueOf(deliveryNumber), "Invalid CSV format (incomplete fields)");
                     continue;
                 }
-                int id = Integer.parseInt(parts[0].trim());
 
+                try {
+                    // 1. Validate & Parse ID
+                    String idStr = parts[0].trim();
+                    if (idStr.isEmpty()) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Missing ID");
+                        continue;
+                    }
+                    int id = Integer.parseInt(idStr);
 
-                if(parts[1].isBlank()) {
-                    writeDeliveries(DeliveryNumber.toString(), "Missing Area");
-                    continue;
-                }
-                String area = parts[1].trim().toLowerCase(); // normalize while reading
-                
+                    // 2. Validate Area
+                    String areaStr = parts[1].trim();
+                    if (areaStr.isEmpty()) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Missing Area");
+                        continue;
+                    }
+                    String area = areaStr.toLowerCase();
 
-                if(parts[2].isBlank()) {
-                    writeDeliveries(DeliveryNumber.toString(), "Missing Priority");
-                    continue;
-                }
-                int priority = Integer.parseInt(parts[2].trim());
+                    // 3. Validate & Parse Priority
+                    String priorityStr = parts[2].trim();
+                    if (priorityStr.isEmpty()) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Missing Priority");
+                        continue;
+                    }
+                    int priority = Integer.parseInt(priorityStr);
 
+                    // 4. Validate & Parse Weight
+                    String weightStr = parts[3].trim();
+                    if (weightStr.isEmpty()) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Missing Weight");
+                        continue;
+                    }
 
-                if(parts[3].isBlank()) {
-                    writeDeliveries(DeliveryNumber.toString(), "Missing Weight");
-                    continue;
+                    double weight = Double.parseDouble(weightStr);
+
+                    if (weight <= 0.00) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Weight cannot be zero or negative");
+                        continue;
+                    }
+                    if (weight > capacity) {
+                        writeDeliveries(String.valueOf(deliveryNumber), "Weight exceeds capacity");
+                        continue;
+                    }
+
+                    deliveries.addDelivery(new Delivery(id, area, priority, weight));
+
+                } catch (NumberFormatException e) {
+                    writeDeliveries(String.valueOf(deliveryNumber), "Invalid numeric value in row");
                 }
-                if(Double.parseDouble(parts[3].trim()) <= 0) {
-                    writeDeliveries(DeliveryNumber.toString(), "Weight cannot be zero or negative");
-                    continue;
-                }
-                if(Double.parseDouble(parts[3].trim()) > capacity) {
-                    writeDeliveries(DeliveryNumber.toString(), "Weight exceeds capacity");
-                    continue;
-                }
-                double weight = Double.parseDouble(parts[3].trim());
-                
-                deliveries.addDelivery(new Delivery(id, area, priority, weight));
             }
-      }
-      return deliveries;
-   }
-
-   public static void writeDeliveries(String DeliveryNumber , String reason) throws IOException {
+        }
+        return deliveries;
+    }
+    public static void writeDeliveries(String DeliveryNumber , String reason) throws IOException {
         try (FileWriter fw = new FileWriter("Refused_Deliveries.txt", true); // true = append mode
             PrintWriter pw = new PrintWriter(fw)) {
             pw.println("Delivery Number: " + DeliveryNumber + ", Reason: " + reason);

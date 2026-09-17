@@ -37,6 +37,7 @@ public class Trip {
     public boolean addDeliveryToTrip(Delivery delivery) {
         if (remainingCapacity >= delivery.getWeight()) {
             deliveries.add(delivery);
+            
             remainingCapacity -= delivery.getWeight();
             return true;
         }
