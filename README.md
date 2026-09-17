@@ -44,7 +44,7 @@ Q3. Are there situations where your algorithm may not produce the best possible 
 Q4. If the input contained 1,000,000 delivery requests, what part of your solution might become slow or memory-intensive?Time Complexity ($\mathcal{O}(N \log N)$): The implementation avoids heavy $\mathcal{O}(N^2)$ or $\mathcal{O}(N^3)$ operations. Reading data runs in $\mathcal{O}(N)$ time, and sorting per area runs in $\mathcal{O}(N \log N)$ time. At $1,000,000$ rows, processing takes around $\sim 10^6 \log_2(10^6) \approx 2 \times 10^7$ operations, which is efficient and finishes in a few seconds on modern CPUs.Memory Bottleneck ($\mathcal{O}(N)$ Space): Holding 1,000,000 Delivery objects in RAM inside Java collections (ArrayList, HashMap) consumes significant heap memory ($\sim 300\text{MB} - 500\text{MB}$).
 
 Q5. What would you improve if you had another day to work on the solution?
-If I had an extra day, I would improve the item packing algorithm by advancing from a primitive DP understanding to a full Dynamic Programming Knapsack Solver. This would allow the system to evaluate exact package weight combinations for small-to-medium batch sizes, guaranteeing the absolute minimum number of total trips while respecting priority constraints.
+With another day, I'd first add a lighter-weight improvement — a TreeMap-based best-fit backfill for leftover trip space (O(log n) per lookup) — before considering full DP, since DP's cost depends on capacity granularity and decimal weights add complexity.
 
 
 ✨ Extension Features
